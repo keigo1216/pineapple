@@ -1,3 +1,5 @@
+#include <buildconfig.h>
+
 ENTRY(boot)
 
 SECTION: {
@@ -51,7 +53,7 @@ SECTION: {
         . = ALIGN(4096);
 
         __boot_stack = .;
-        . = . + 4 * 1024;
+        . = . + NUM_CPUS_MAX * KERNEL_STACK_SIZE;
     }
 
     . = ALIGN(4096);

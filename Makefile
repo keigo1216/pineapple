@@ -6,9 +6,11 @@ PROGRESS ?= echo
 CC := clang
 MKDIR ?= mkdir
 RM ?= rm
+top_dir := $(shell pwd)
 
 # option of C compiler and linker
 CFLAGS :=
+CFLAGS += -I $(top_dir)
 
 .PHONY: all
 all: $(BUILD_DIR)/kernel/kernel.ld
