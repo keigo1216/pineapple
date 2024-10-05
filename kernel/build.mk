@@ -1,0 +1,1 @@
+subdirs-y += aarch64

@@ -1,0 +1,64 @@
+#include <buildconfig.h>
+
+ENTRY(boot)
+
+SECTIONS {
+    . = 0x80000;
+    __ram_start = .;
+
+    // program
+    .text : {
+        __text = .;
+        KEEP(*(.boot));
+
+        . = ALIGN(8);
+        *(.text .text.*);
+
+        . = ALIGN(4096);
+        __text_end = .;
+    }
+
+    __data = .;
+    // set const value
+    .rodata : {
+        *(.rodata .rodata.*);
+        . = ALIGN(8);
+        *(.srodata .srodata.*);
+
+        KEEP(*(.symbols));
+
+        . = ALIGN(4096);
+        __boot_elf = .;
+        *(.boot_elf);
+        . = ALIGN(4096);
+    }
+
+    // global var, not 0 initialized
+    .data : {
+        . = ALIGN(16);
+        *(.data .data.*);
+        . = ALIGN(16);
+        *(.sdata .sdata.*);
+    }
+
+    // global var, 0 initialized
+    .bss : {
+        __bss = .;
+        . = ALIGN(16);
+        *(.bss .bss.*);
+        . = ALIGN(16);
+        *(.sbss .sbss.*);
+        __bss_end = .;
+
+        . = ALIGN(4096);
+
+        __boot_stack = .;
+        . = . + NUM_CPUS_MAX * KERNEL_STACK_SIZE;
+    }
+
+    . = ALIGN(4096);
+    __data_end = .;
+    
+    // heap
+    __free_ram_start = .;
+}
