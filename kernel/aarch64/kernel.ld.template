@@ -2,12 +2,12 @@
 
 ENTRY(boot)
 
-SECTION: {
+SECTIONS {
     . = 0x80000;
     __ram_start = .;
 
     // program
-    .text: {
+    .text : {
         __text = .;
         KEEP(*(.boot));
 
@@ -20,7 +20,7 @@ SECTION: {
 
     __data = .;
     // set const value
-    .rodata: {
+    .rodata : {
         *(.rodata .rodata.*);
         . = ALIGN(8);
         *(.srodata .srodata.*);
@@ -34,7 +34,7 @@ SECTION: {
     }
 
     // global var, not 0 initialized
-    .data: {
+    .data : {
         . = ALIGN(16);
         *(.data .data.*);
         . = ALIGN(16);
@@ -42,7 +42,7 @@ SECTION: {
     }
 
     // global var, 0 initialized
-    .bss: {
+    .bss : {
         __bss = .;
         . = ALIGN(16);
         *(.bss .bss.*);
